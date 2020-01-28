@@ -5,27 +5,20 @@ import os
 from itertools import chain
 import collections
 
-# import tensorflow as tf
-# from tensorflow import keras
-# from tensorflow.keras import layers
 import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-DATA_DIR = "./data"
-OUTPUT_DIR = "./output"
-VOCAB_SIZE = 1000
-
-def get_word_tokens(path):
+def get_word_tokens(input_path):
     """Reads all .txt files in given directory and returns tokenized words"""
     
     logging.debug("loading texts")
     text = ""
 
     # read files from directory
-    for file in os.listdir(path):
+    for file in os.listdir(input_path):
         if file.endswith(".txt"):
-            with open(os.path.join(path, file), "r") as f:
+            with open(os.path.join(input_path, file), "r") as f:
                 text = " ".join([text, f.read()])
 
     # tokenize text
@@ -38,12 +31,12 @@ def get_word_tokens(path):
 
     return words
 
-def normalization(words):
+def normalization(words, output_path):
     """Returns normalized words"""
     logging.debug("normalizing text")
 
     # write text before processing to disk
-    with open(f'{OUTPUT_DIR}/pre.txt', 'w') as f:
+    with open(f'{output_path}/pre.txt', 'w') as f:
         for word in words:
             f.write("%s\n" % word)
 
@@ -61,7 +54,7 @@ def normalization(words):
     # TODO consider cleaning 's apostrophes
 
     # write text after processing to disk
-    with open(f'{OUTPUT_DIR}/post.txt', 'w') as f:
+    with open(f'{output_path}/post.txt', 'w') as f:
         for word in words:
             f.write("%s\n" % word)
 
@@ -104,15 +97,3 @@ def build_dataset(words, n_words):
     logging.debug("building dataset done")
 
     return data, count, word2id, id2word
-
-
-def main():
-    logging.getLogger().setLevel(logging.DEBUG)
-    logging.debug("starting program")
-
-    words = get_word_tokens(DATA_DIR)
-    words = normalization(words)
-    data, count, word2id, id2word = build_dataset(words, VOCAB_SIZE)
-
-if __name__ == '__main__':
-    main()
