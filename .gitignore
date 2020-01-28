@@ -1,5 +1,5 @@
-input/*
 output/*
 !input/.gitkeep
 !output/.gitkeep
 __pycache__
+.vscode

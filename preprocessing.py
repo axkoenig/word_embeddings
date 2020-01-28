@@ -9,6 +9,16 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    nltk.download('wordnet')
+
 def get_word_tokens(input_path):
     """Reads all .txt files in given directory and returns tokenized words"""
     
