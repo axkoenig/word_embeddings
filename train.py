@@ -90,5 +90,5 @@ if __name__ == '__main__':
 
     if not os.path.exists(MODELS_DIR):
         os.mkdir(MODELS_DIR)
-    model.save(os.path.join(MODELS_DIR, "model.h5"))
+    model.save(os.path.join(MODELS_DIR, timestamp + "model.h5"))
     logger.debug(f"saved model to {MODELS_DIR}")
