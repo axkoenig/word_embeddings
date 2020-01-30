@@ -50,8 +50,11 @@ def train(data_dir, embedding_dim, iterations, vocab_size, window_size):
     word_context = np.zeros((1,))
     label = np.zeros((1,))
 
-    # training loop
+
     logger.debug("starting training")
+    avg_loss = 0
+    log_iter = 1000
+
     for iteration in range(iterations):
         # select training data randomly
         index = np.random.randint(0, len(labels)-1)
@@ -60,20 +63,25 @@ def train(data_dir, embedding_dim, iterations, vocab_size, window_size):
         label[0, ] = labels[index]
 
         loss = model.train_on_batch([word_target, word_context], label)
-        if iteration % 100 == 0:
-            logger.debug(f"iteration: {iteration} \t loss: {loss}")
+        avg_loss += loss
+
+        if iteration % log_iter == 0:
+            if iteration > 0:
+                avg_loss /= log_iter
+            logger.debug(f"iteration: {iteration} \t avg loss: {avg_loss}")
+            avg_loss = 0
     
     logger.debug("finished training")
 
     return model
 
 if __name__ == '__main__':
-    # TODO parallelize preprocessing 
     # TODO plot model loss
     # TODO implement saving model after checkpoint, reload if applicable
-    # TODO average loss 
     # TODO download more data 
+    # TODO get logging to work
     # TODO check what exatra intra/inter difference is 
+    # TODO parallelize preprocessing 
     # TODO make model as class
 
     parser = argparse.ArgumentParser("Trains a Word2Vec model with negative sampling")
