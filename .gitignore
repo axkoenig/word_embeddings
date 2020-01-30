@@ -1,5 +1,4 @@
 output
-!input/.gitkeep
 logs
 __pycache__
 .vscode

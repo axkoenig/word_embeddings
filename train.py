@@ -1,5 +1,5 @@
 import os
-import datetime 
+import datetime
 import sys
 import argparse
 
@@ -16,16 +16,20 @@ CHKPTS_DIR = "./output/models/chkpts"
 OUTPUT_DIR = "./output/text"
 
 def train(input_subdir, embedding_dim, iterations, vocab_size, window_size):
+    logger = logging.getLogger("MAIN.TRAIN")
+    
     # preprocessing of text
     words = get_word_tokens(INPUT_DIR, input_subdir)
     words = normalization(words, OUTPUT_DIR, input_subdir)
     data, count, word2id, id2word = build_dataset(words, vocab_size)
-    words_target, words_context, labels = keras_preprocessing(data, vocab_size, window_size)
+    words_target, words_context, labels = keras_preprocessing(
+        data, vocab_size, window_size)
 
     # create input variables and embedding layer
     input_target = keras.Input((1,))
     input_context = keras.Input((1,))
-    embedding = layers.Embedding(vocab_size, embedding_dim, input_length=1, name="embedding")
+    embedding = layers.Embedding(
+        vocab_size, embedding_dim, input_length=1, name="embedding")
 
     # embed target and context words, reshape for dot product
     embedded_target = embedding(input_target)
@@ -71,26 +75,28 @@ def train(input_subdir, embedding_dim, iterations, vocab_size, window_size):
                 avg_loss /= log_iter
             logger.debug(f"iteration: {iteration} \t avg loss: {avg_loss}")
             avg_loss = 0
-        
+
         if iteration % chkpt_iter == 0:
             logger.debug(f"saving model at iteration {iteration}")
             model_name = f"{iteration}_of_{iterations}_model_{input_subdir}_{timestamp}.h5"
             model.save(os.path.join(CHKPTS_DIR, model_name))
             logger.debug(f"saved model {model_name} to {CHKPTS_DIR}")
-    
+
     logger.debug("finished training")
 
     return model
 
+
 if __name__ == '__main__':
     # TODO plot model loss
-    # TODO download more data 
+    # TODO download more data
     # TODO get logging to work
-    # TODO check what exatra intra/inter difference is 
-    # TODO parallelize preprocessing 
+    # TODO check what exatra intra/inter difference is
+    # TODO parallelize preprocessing
     # TODO make model as class
 
-    parser = argparse.ArgumentParser("Trains a Word2Vec model with negative sampling")
+    parser = argparse.ArgumentParser(
+        "Trains a Word2Vec model with negative sampling")
     parser.add_argument("--input_subdir", dest="input_subdir", required=True,
                         help="The subdirectory in './input' containing training data as '*.txt‘ files")
     parser.add_argument("--embedding_dim", dest="embedding_dim", type=int,
@@ -111,22 +117,33 @@ if __name__ == '__main__':
 
     # logger setup
     timestamp = datetime.datetime.now().strftime(format="%d_%m_%Y_%H%M%S")
-    if not os.path.exists(LOGS_DIR):
-        os.mkdir(LOGS_DIR)
-        logger.debug(f"created logging directory {LOGS_DIR}")
-    logging.basicConfig(filename=os.path.join(LOGS_DIR, timestamp+".log"), level=logging.DEBUG)
-    logger = logging.getLogger("trainer")
+    log_name = timestamp + ".log"
+    log_dir = os.path.join(LOGS_DIR, args.input_subdir) 
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    logFormatter = logging.Formatter("%(asctime)s - %(name)s - [%(levelname)s]  %(message)s")
+    logger = logging.getLogger("MAIN")
+
+    fileHandler = logging.FileHandler(f"{log_dir}/{log_name}")
+    fileHandler.setFormatter(logFormatter)
+    logger.addHandler(fileHandler)
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setFormatter(logFormatter)
+    logger.addHandler(consoleHandler)
+    logger.setLevel(logging.DEBUG)
     logger.debug("starting program")
 
     if not os.path.exists(MODELS_DIR):
         os.makedirs(MODELS_DIR)
         logger.debug(f"created final models directory {MODELS_DIR}")
-    
+
     if not os.path.exists(CHKPTS_DIR):
         os.makedirs(CHKPTS_DIR)
         logger.debug(f"created checkpoints models directory {CHKPTS_DIR}")
 
-    model = train(args.input_subdir, args.embedding_dim, args.iterations, args.vocab_size, args.window_size)
+    model = train(args.input_subdir, args.embedding_dim,
+                  args.iterations, args.vocab_size, args.window_size)
 
     model_name = f"model_{args.input_subdir}_{timestamp}.h5"
     model.save(os.path.join(MODELS_DIR, model_name))

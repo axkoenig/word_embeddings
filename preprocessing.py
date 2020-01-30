@@ -21,8 +21,7 @@ try:
 except LookupError:
     nltk.download('wordnet')
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-global_logger = logging.getLogger("preprocessor")
+global_logger = logging.getLogger("MAIN.PREPR")
 
 def get_word_tokens(input_path, name):
     """Reads all .txt files in given directory and returns tokenized words"""

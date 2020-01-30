@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-global_logger = logging.getLogger("evaluator")
+global_logger = logging.getLogger("EVALUATOR")
 
 def load_model(path):
     """Loads a Keras embedding model from path and returns embedding layer."""
