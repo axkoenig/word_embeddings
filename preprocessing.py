@@ -24,16 +24,20 @@ except LookupError:
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 global_logger = logging.getLogger("preprocessor")
 
-def get_word_tokens(input_path):
+def get_word_tokens(input_path, data_dir):
     """Reads all .txt files in given directory and returns tokenized words"""
-    
+
     global_logger.debug("loading texts")
     text = ""
 
+    path = os.path.join(input_path, data_dir)
+    if not os.path.exists(path):
+        raise OSError(f"Given path '{path}' does not exist")
+
     # read files from directory
-    for file in os.listdir(input_path):
+    for file in os.listdir(path):
         if file.endswith(".txt"):
-            with open(os.path.join(input_path, file), "r") as f:
+            with open(os.path.join(path, file), "r") as f:
                 text = " ".join([text, f.read()])
 
     # tokenize text
