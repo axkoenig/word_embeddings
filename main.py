@@ -8,11 +8,12 @@ import tensorflow as tf
 from preprocessing import *
 from train import *
 
-INPUT_DIR = "./input"
-LOGS_DIR = "./output/logs"
-MODELS_DIR = "./output/models/final"
-CHKPTS_DIR = "./output/models/chkpts"
-OUTPUT_DIR = "./output/text"
+INPUT_DIR = "input"
+OUTPUT_DIR = "output"
+LOGS_DIR = "logs"
+MODELS_DIR = "models/final"
+CHKPTS_DIR = "models/chkpts"
+TEXT_DIR = "text"
 
 def main():
     parser = argparse.ArgumentParser("Trains a Word2Vec model with negative sampling")
@@ -34,17 +35,23 @@ def main():
     tf.config.threading.set_inter_op_parallelism_threads(args.num_threads)
     tf.config.threading.set_intra_op_parallelism_threads(args.num_threads)
 
+    # define directories
+    input_dir = os.path.join(INPUT_DIR, args.input_subdir)
+    models_dir = os.path.join(OUTPUT_DIR, args.input_subdir, MODELS_DIR)
+    chkpts_dir = os.path.join(OUTPUT_DIR, args.input_subdir, CHKPTS_DIR)
+    logs_dir = os.path.join(OUTPUT_DIR, args.input_subdir, LOGS_DIR)
+    text_dir = os.path.join(OUTPUT_DIR, args.input_subdir, TEXT_DIR)
+
     # logger setup
     timestamp = datetime.datetime.now().strftime(format="%d_%m_%Y_%H%M%S")
     log_name = timestamp + ".log"
-    log_dir = os.path.join(LOGS_DIR, args.input_subdir) 
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
 
     logFormatter = logging.Formatter("%(asctime)s - %(name)s - [%(levelname)s]  %(message)s")
     logger = logging.getLogger("MAIN")
 
-    fileHandler = logging.FileHandler(f"{log_dir}/{log_name}")
+    fileHandler = logging.FileHandler(f"{logs_dir}/{log_name}")
     fileHandler.setFormatter(logFormatter)
     logger.addHandler(fileHandler)
     consoleHandler = logging.StreamHandler()
@@ -53,32 +60,29 @@ def main():
     logger.setLevel(logging.DEBUG)
     logger.debug("starting program")
 
-    if not os.path.exists(MODELS_DIR):
-        os.makedirs(MODELS_DIR)
-        logger.debug(f"created final models directory {MODELS_DIR}")
-
-    if not os.path.exists(CHKPTS_DIR):
-        os.makedirs(CHKPTS_DIR)
-        logger.debug(f"created checkpoints models directory {CHKPTS_DIR}")
-
     # preprocessing of text
-    words = get_word_tokens(INPUT_DIR, args.input_subdir)
-    words = normalization(words, OUTPUT_DIR, args.input_subdir)
+    words = get_word_tokens(input_dir)
+    words = normalization(words, text_dir)
     data, count, word2id, id2word = build_dataset(words, args.vocab_size)
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 
     model, loss_hist = train(words_target, words_context, labels, args.input_subdir, args.embedding_dim,
-                  args.iterations, args.vocab_size, args.window_size, CHKPTS_DIR, timestamp)
+                  args.iterations, args.vocab_size, args.window_size, chkpts_dir, timestamp)
+
+    if not os.path.exists(models_dir):
+        os.makedirs(models_dir)
+        logger.debug(f"created final models directory {models_dir}")
 
     # save model
     model_name = f"model_{args.input_subdir}_{timestamp}.h5"
-    model.save(os.path.join(MODELS_DIR, model_name))
-    logger.debug(f"saved final model {model_name} to {MODELS_DIR}")
+    model.save(os.path.join(models_dir, model_name))
+    logger.debug(f"saved final model {model_name} to {models_dir}")
 
-    plot_loss(loss_hist, log_dir, timestamp)
+    plot_loss(loss_hist, logs_dir, timestamp)
 
 if __name__ == '__main__':
     # TODO download more data
+    # TODO check if input folder empty
     # TODO get logging to work
     # TODO check what exatra intra/inter difference is
     # TODO parallelize preprocessing

@@ -23,13 +23,12 @@ except LookupError:
 
 logger = logging.getLogger("MAIN.PREPR")
 
-def get_word_tokens(input_path, name):
+def get_word_tokens(path):
     """Reads all .txt files in given directory and returns tokenized words"""
 
     logger.debug("loading texts")
     text = ""
 
-    path = os.path.join(input_path, name)
     if not os.path.exists(path):
         raise OSError(f"Given path '{path}' does not exist")
 
@@ -49,18 +48,17 @@ def get_word_tokens(input_path, name):
 
     return words
 
-def normalization(words, output_path, name):
+def normalization(words, path):
     """Returns normalized words"""
     logger.debug("normalizing text")
 
     # create directory for saving processing outputs
-    path = os.path.join(output_path, name)
     if not os.path.exists(path):
         os.makedirs(path)
         logger.debug(f"created pre/post-processing directory {path}")
 
     # write text before processing to disk
-    with open(f'{output_path}/{name}_pre.txt', 'w') as f:
+    with open(f'{path}/pre.txt', 'w') as f:
         for word in words:
             f.write("%s\n" % word)
 
@@ -78,7 +76,7 @@ def normalization(words, output_path, name):
     # TODO consider cleaning 's apostrophes
 
     # write text after processing to disk
-    with open(f'{output_path}/{name}_post.txt', 'w') as f:
+    with open(f'{path}/post.txt', 'w') as f:
         for word in words:
             f.write("%s\n" % word)
 

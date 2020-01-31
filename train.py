@@ -12,6 +12,10 @@ from matplotlib import rcParams
 logger = logging.getLogger("MAIN.TRAIN")
 
 def train(words_target, words_context, labels, input_subdir, embedding_dim, iterations, vocab_size, window_size, chkpts_dir, timestamp):
+    
+    if not os.path.exists(chkpts_dir):
+        os.makedirs(chkpts_dir)
+        logger.debug(f"created checkpoints models directory {chkpts_dir}")
 
     # create input variables and embedding layer
     input_target = keras.Input((1,))
@@ -75,12 +79,12 @@ def train(words_target, words_context, labels, input_subdir, embedding_dim, iter
 
     return model, loss_hist
 
-def plot_loss(loss_hist, log_dir, timestamp):
+def plot_loss(loss_hist, path, timestamp):
     """Plots loss history.
     
     Args:
         loss_hist (array): array of tuples containing iterations and loss
-        log_dir (string): where to save the plot
+        path (string): where to save the plot
         timestamp (string): when this session started
     """
     rcParams['font.family'] = "Arial" 
@@ -94,13 +98,13 @@ def plot_loss(loss_hist, log_dir, timestamp):
     
     iterations = [i[0] for i in loss_hist]
     losses = [i[1] for i in loss_hist]
-    path = f"{log_dir}/loss_{timestamp}.png"
+    name = f"{path}/loss_{timestamp}.png"
 
     fig = plt.figure(constrained_layout=True)
     plt.plot(iterations, losses)
     plt.xlabel("Iterations")
     plt.ylabel("Average Loss")
     plt.xlim(0, iterations[-1])
-    fig.savefig(path, dpi=400)
+    fig.savefig(name, dpi=400)
 
-    logger.debug(f"saved loss plot to {path}")
+    logger.debug(f"saved loss plot to {name}")
