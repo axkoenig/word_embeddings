@@ -1,3 +1,5 @@
+import logging
+
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -11,7 +13,8 @@ def load_model(path):
 
     model = keras.models.load_model(path)
     model.summary()
-    embedding = model.layers[2].get_weights()[0]
+    #embedding = model.layers[2].get_weights()[0]
+    embedding = model.get_layer(name="embedding").get_weights()[0]
     
     global_logger.debug(f"loading keras model done")
 

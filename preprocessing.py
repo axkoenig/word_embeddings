@@ -21,12 +21,12 @@ try:
 except LookupError:
     nltk.download('wordnet')
 
-global_logger = logging.getLogger("MAIN.PREPR")
+logger = logging.getLogger("MAIN.PREPR")
 
 def get_word_tokens(input_path, name):
     """Reads all .txt files in given directory and returns tokenized words"""
 
-    global_logger.debug("loading texts")
+    logger.debug("loading texts")
     text = ""
 
     path = os.path.join(input_path, name)
@@ -40,7 +40,7 @@ def get_word_tokens(input_path, name):
                 text = " ".join([text, f.read()])
 
     # tokenize text
-    global_logger.debug("tokenizing texts")
+    logger.debug("tokenizing texts")
     sentences = nltk.sent_tokenize(text)
     words = [nltk.word_tokenize(sentence) for sentence in sentences]
 
@@ -51,13 +51,13 @@ def get_word_tokens(input_path, name):
 
 def normalization(words, output_path, name):
     """Returns normalized words"""
-    global_logger.debug("normalizing text")
+    logger.debug("normalizing text")
 
     # create directory for saving processing outputs
     path = os.path.join(output_path, name)
     if not os.path.exists(path):
         os.makedirs(path)
-        global_logger.debug(f"created pre/post-processing directory {path}")
+        logger.debug(f"created pre/post-processing directory {path}")
 
     # write text before processing to disk
     with open(f'{output_path}/{name}_pre.txt', 'w') as f:
@@ -82,13 +82,13 @@ def normalization(words, output_path, name):
         for word in words:
             f.write("%s\n" % word)
 
-    global_logger.debug(f"normalizing text done. returning {len(words)} words")
+    logger.debug(f"normalizing text done. returning {len(words)} words")
     return words
 
 def build_dataset(words, n_words):
     """Taken from https://github.com/tensorflow/tensorflow/blob/r1.2/tensorflow/examples/tutorials/word2vec/word2vec_basic.py"""
     
-    global_logger.debug("building dataset")
+    logger.debug("building dataset")
 
     # get n_words most common words and replace rest with "UNK" token
     count = [["UNK", -1]]
@@ -116,15 +116,15 @@ def build_dataset(words, n_words):
     # create reverse dictionary 
     id2word = dict(zip(word2id.values(), word2id.keys()))
     
-    global_logger.debug(f"unique words: {len(set(words))}")
-    global_logger.debug(f"most common words: {count[:10]}")
-    global_logger.debug("building dataset done")
+    logger.debug(f"unique words: {len(set(words))}")
+    logger.debug(f"most common words: {count[:10]}")
+    logger.debug("building dataset done")
 
     return data, count, word2id, id2word
 
 def keras_preprocessing(data, vocab_size, window_size):
     
-    # sampling table to produce negative samples in a balanced manner
+    # sampling table to sample more common words less often
     sampling_table = keras.preprocessing.sequence.make_sampling_table(vocab_size)
 
     # get word pairs (label = 1 for positive samples, 0 for negative samples)
