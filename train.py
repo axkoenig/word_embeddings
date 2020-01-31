@@ -49,7 +49,7 @@ def train(words_target, words_context, labels, input_subdir, embedding_dim, iter
     logger.debug("starting training")
     avg_loss = 0
     loss_hist = []
-    log_iter = 2
+    log_iter = 1000
     chkpt_iter = 10000
 
     for iteration in range(iterations):
