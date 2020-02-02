@@ -11,7 +11,12 @@ from matplotlib import rcParams
 
 logger = logging.getLogger("MAIN.TRAIN")
 
-def train(model, words_target, words_context, labels, iterations, chkpts_dir, timestamp):
+### params for validation
+valid_size = 16
+valid_window = 100
+valid_examples = np.random.choice(valid_window, valid_size, replace=False)
+    
+def train(model, val_model, id2word, vocab_size, words_target, words_context, labels, iterations, chkpts_dir, timestamp):
     
     if not os.path.exists(chkpts_dir):
         os.makedirs(chkpts_dir)
@@ -27,6 +32,8 @@ def train(model, words_target, words_context, labels, iterations, chkpts_dir, ti
     log_iter = 1000
     chkpt_iter = 10000
 
+    sim_cb = SimilarityCallback()
+    
     for iteration in range(iterations):
         # select training data randomly
         index = np.random.randint(0, len(labels)-1)
@@ -49,6 +56,8 @@ def train(model, words_target, words_context, labels, iterations, chkpts_dir, ti
             model_name = f"{iteration}_of_{iterations}_model_{timestamp}.h5"
             model.save(os.path.join(chkpts_dir, model_name))
             logger.debug(f"saved model {model_name} to {chkpts_dir}")
+            
+            sim_cb.run_sim(id2word, val_model, vocab_size)
 
     logger.debug("finished training")
 
@@ -83,3 +92,28 @@ def plot_loss(loss_hist, path, timestamp):
     fig.savefig(name, dpi=400)
 
     logger.debug(f"saved loss plot to {name}")
+
+class SimilarityCallback:
+    def run_sim(self, id2word, val_model, vocab_size):
+        for i in range(valid_size):
+            valid_word = id2word[valid_examples[i]]
+            top_k = 8  # number of nearest neighbors
+            sim = self._get_sim(valid_examples[i], val_model, vocab_size)
+            nearest = (-sim).argsort()[1:top_k + 1]
+            log_str = 'Nearest to %s:' % valid_word
+            for k in range(top_k):
+                close_word = id2word[nearest[k]]
+                log_str = '%s %s,' % (log_str, close_word)
+            print(log_str)
+
+    @staticmethod
+    def _get_sim(valid_word_idx, val_model, vocab_size):
+        sim = np.zeros((vocab_size,))
+        in_arr1 = np.zeros((1,))
+        in_arr2 = np.zeros((1,))
+        for i in range(vocab_size):
+            in_arr1[0,] = valid_word_idx
+            in_arr2[0,] = i
+            out = val_model.predict_on_batch([in_arr1, in_arr2])
+            sim[i] = out
+        return sim

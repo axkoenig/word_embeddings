@@ -68,9 +68,9 @@ def main():
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 
     # create model 
-    model = build_model(args.vocab_size, args.embedding_dim)
+    train_model, val_model = build_model(args.vocab_size, args.embedding_dim)
 
-    loss_hist = train(model, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp)
+    loss_hist = train(train_model, val_model, id2word, args.vocab_size, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp)
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
@@ -78,7 +78,7 @@ def main():
 
     # save model
     model_name = f"model_{timestamp}.h5"
-    model.save(os.path.join(models_dir, model_name))
+    train_model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
     plot_loss(loss_hist, logs_dir, timestamp)

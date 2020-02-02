@@ -49,11 +49,16 @@ def build_model(vocab_size, embedding_dim):
     # define sigmoid output layer
     output = layers.Dense(1, activation="sigmoid")(dot_product)
 
-    # create model
-    model = keras.Model(inputs=[input_target, input_context], outputs=output)
-    logger.debug("created model")
-    model.summary()
-    model.compile(loss=tf.keras.losses.BinaryCrossentropy(), optimizer=keras.optimizers.RMSprop())
-    logger.debug("compiled model")
+    # create training model
+    train_model = keras.Model(inputs=[input_target, input_context], outputs=output)
+    logger.debug("created training model")
+    train_model.summary()
+    train_model.compile(loss=keras.losses.BinaryCrossentropy(), optimizer=keras.optimizers.RMSprop())
+    logger.debug("compiled training model")
 
-    return model 
+    # create validation model 
+    similarity = layers.dot(inputs=[embedded_target, embedded_context], axes=1, normalize=True)
+    val_model = keras.Model(inputs=[input_target, input_context], outputs=similarity)
+    logger.debug("created validation model")
+    
+    return train_model, val_model

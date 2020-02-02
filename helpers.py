@@ -13,4 +13,3 @@ def pdf2txt(path, doc_name):
     with open(save_path, "w") as f:
         f.write(content)
 
-pdf2txt("input/islam", "The-Complete-Hadith")
