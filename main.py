@@ -5,6 +5,7 @@ import logging
 
 import tensorflow as tf
 
+from model import * 
 from preprocessing import *
 from train import *
 
@@ -66,15 +67,17 @@ def main():
     data, count, word2id, id2word = build_dataset(words, args.vocab_size)
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 
-    model, loss_hist = train(words_target, words_context, labels, args.input_subdir, args.embedding_dim,
-                  args.iterations, args.vocab_size, args.window_size, chkpts_dir, timestamp)
+    # create model 
+    model = build_model(args.vocab_size, args.embedding_dim)
+
+    loss_hist = train(model, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp)
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
         logger.debug(f"created final models directory {models_dir}")
 
     # save model
-    model_name = f"model_{args.input_subdir}_{timestamp}.h5"
+    model_name = f"model_{timestamp}.h5"
     model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
@@ -83,9 +86,7 @@ def main():
 if __name__ == '__main__':
     # TODO download more data
     # TODO check if input folder empty
-    # TODO get logging to work
     # TODO check what exatra intra/inter difference is
     # TODO parallelize preprocessing
-    # TODO make model as class
     # TODO test if using model.fit increases scores (increase batch size to > 1)
     main()
