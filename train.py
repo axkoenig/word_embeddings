@@ -38,7 +38,7 @@ def train(words_target, words_context, labels, input_subdir, embedding_dim, iter
     # create model
     model = keras.Model(inputs=[input_target, input_context], outputs=output)
     logger.debug("created model")
-    logger.debug(model.summary())
+    model.summary()
     logger.debug("compiling model")
     model.compile(loss="binary_crossentropy", optimizer="rmsprop")
 
