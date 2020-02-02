@@ -89,7 +89,7 @@ context = embedding(input_context)
 context = layers.Reshape((vector_dim, 1))(context)
 
 # setup a cosine similarity operation which will be output in a secondary model
-similarity = layers.dot(inputs=[target, context], axes=0, normalize=True)
+similarity = layers.dot(inputs=[target, context], axes=1, normalize=True)
 
 # now perform the dot product operation to get a similarity measure
 dot_product = layers.dot(inputs=[target, context], axes=1)
