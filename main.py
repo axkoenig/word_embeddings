@@ -28,10 +28,14 @@ def main():
                         help="The vocabulary size of the Word2Vec model (default=10000)", default=10000)
     parser.add_argument("--window_size", dest="window_size", type=int,
                         help="The number of context words to consider left and right from target word (default=3)", default=3)
+    parser.add_argument("--batch_size", dest="batch_size", type=int, 
+                        help="The batch size used for training (default=128)", default=128)
+    parser.add_argument("--epochs", dest="epochs", type=int, 
+                        help="The number of epochs to train the model (default=10)", default=10)
     parser.add_argument("--num_threads", dest="num_threads", type=int,
                         help="The number of threads to run (default=16)", default=16)
     parser.add_argument("--note", dest="note", type=str,
-                        help="A note to add to the model saving path (default="")", default="")
+                        help="A note to add to the model and log saving path (default="")", default="")
     args = parser.parse_args()
 
     # execute program in multiple threads
@@ -72,7 +76,19 @@ def main():
     # create models
     train_model, val_model = build_model(args.vocab_size, args.embedding_dim)
     
-    loss_hist = train(train_model, val_model, id2word, args.vocab_size, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp, args.note)
+    history = train(train_model, 
+                    val_model,
+                    id2word, 
+                    args.vocab_size, 
+                    args.batch_size, 
+                    args.epochs,
+                    words_target, 
+                    words_context, 
+                    labels, 
+                    args.iterations, 
+                    chkpts_dir, 
+                    timestamp, 
+                    args.note)
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
@@ -83,7 +99,7 @@ def main():
     train_model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
-    plot_loss(loss_hist, logs_dir, timestamp)
+    plot_loss(history, logs_dir, note, timestamp)
 
 if __name__ == '__main__':
     # TODO download more data
