@@ -22,8 +22,6 @@ def main():
                         help="The subdirectory in './input' containing training data as '*.txt‘ files. This will also be the name of the output subdirectory")
     parser.add_argument("--embedding_dim", dest="embedding_dim", type=int,
                         help="The embedding dimension of the Word2Vec model (default=300)", default=300)
-    parser.add_argument("--iterations", dest="iterations", type=int,
-                        help="The number of iterations to train for (default=500000)", default=500000)
     parser.add_argument("--vocab_size", dest="vocab_size", type=int,
                         help="The vocabulary size of the Word2Vec model (default=10000)", default=10000)
     parser.add_argument("--window_size", dest="window_size", type=int,
@@ -84,8 +82,7 @@ def main():
                     args.epochs,
                     words_target, 
                     words_context, 
-                    labels, 
-                    args.iterations, 
+                    labels,
                     chkpts_dir, 
                     timestamp, 
                     args.note)
