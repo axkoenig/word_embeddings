@@ -90,6 +90,7 @@ def main():
     filename = maybe_download('text8.zip', url, 31344016)
     words = read_data(filename)
     print(words[:7])
+    print(f"amount of words:{len(words)}")
     data, count, word2id, id2word = build_dataset(words, args.vocab_size)
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 

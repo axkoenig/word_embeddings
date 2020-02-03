@@ -133,4 +133,5 @@ def keras_preprocessing(data, vocab_size, window_size):
     words_target = np.array(words_target, dtype="int32")
     words_context = np.array(words_context, dtype="int32")
 
+    logger.debug(f"returning {len(couples)} ([target, context], label) pairs")
     return words_target, words_context, labels
