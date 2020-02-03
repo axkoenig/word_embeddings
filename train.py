@@ -100,7 +100,6 @@ class SimilarityCallback:
             top_k = 8  # number of nearest neighbors
             sim = self._get_sim(valid_examples[i], val_model, vocab_size)
             nearest = (-sim).argsort()[1:top_k + 1]
-            import pdb; pdb.set_trace()
             log_str = 'Nearest to %s:' % valid_word
             for k in range(top_k):
                 close_word = id2word[nearest[k]]
