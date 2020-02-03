@@ -47,7 +47,7 @@ def main():
     
     # logger setup
     timestamp = datetime.datetime.now().strftime(format="%d_%m_%Y_%H%M%S")
-    log_name = timestamp + ".log"
+    log_name = args.note + timestamp + ".log"
     if not os.path.exists(logs_dir):
         os.makedirs(logs_dir)
 
