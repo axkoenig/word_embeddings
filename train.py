@@ -16,7 +16,7 @@ valid_size = 16
 valid_window = 100
 valid_examples = np.random.choice(valid_window, valid_size, replace=False)
     
-def train(model, val_model, id2word, vocab_size, words_target, words_context, labels, iterations, chkpts_dir, timestamp):
+def train(model, val_model, id2word, vocab_size, words_target, words_context, labels, iterations, chkpts_dir, timestamp, note):
     
     if not os.path.exists(chkpts_dir):
         os.makedirs(chkpts_dir)
@@ -53,7 +53,7 @@ def train(model, val_model, id2word, vocab_size, words_target, words_context, la
 
         if iteration % chkpt_iter == 0:
             logger.debug(f"saving model at iteration {iteration}")
-            model_name = f"{iteration}_of_{iterations}_model_{timestamp}.h5"
+            model_name = f"{iteration}_of_{iterations}_model_{note}_{timestamp}.h5"
             model.save(os.path.join(chkpts_dir, model_name))
             logger.debug(f"saved model {model_name} to {chkpts_dir}")
             
@@ -100,6 +100,7 @@ class SimilarityCallback:
             top_k = 8  # number of nearest neighbors
             sim = self._get_sim(valid_examples[i], val_model, vocab_size)
             nearest = (-sim).argsort()[1:top_k + 1]
+            import pdb; pdb.set_trace()
             log_str = 'Nearest to %s:' % valid_word
             for k in range(top_k):
                 close_word = id2word[nearest[k]]

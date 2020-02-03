@@ -30,6 +30,8 @@ def main():
                         help="The number of context words to consider left and right from target word (default=3)", default=3)
     parser.add_argument("--num_threads", dest="num_threads", type=int,
                         help="The number of threads to run (default=16)", default=16)
+    parser.add_argument("--note", dest="note", type=str,
+                        help="A note to add to the model saving path (default="")", default="")
     args = parser.parse_args()
 
     # execute program in multiple threads
@@ -42,7 +44,7 @@ def main():
     chkpts_dir = os.path.join(OUTPUT_DIR, args.input_subdir, CHKPTS_DIR)
     logs_dir = os.path.join(OUTPUT_DIR, args.input_subdir, LOGS_DIR)
     text_dir = os.path.join(OUTPUT_DIR, args.input_subdir, TEXT_DIR)
-
+    
     # logger setup
     timestamp = datetime.datetime.now().strftime(format="%d_%m_%Y_%H%M%S")
     log_name = timestamp + ".log"
@@ -67,17 +69,17 @@ def main():
     data, count, word2id, id2word = build_dataset(words, args.vocab_size)
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 
-    # create model 
+    # create models
     train_model, val_model = build_model(args.vocab_size, args.embedding_dim)
-
-    loss_hist = train(train_model, val_model, id2word, args.vocab_size, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp)
+    
+    loss_hist = train(train_model, val_model, id2word, args.vocab_size, words_target, words_context, labels, args.iterations, chkpts_dir, timestamp, args.note)
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
         logger.debug(f"created final models directory {models_dir}")
 
     # save model
-    model_name = f"model_{timestamp}.h5"
+    model_name = f"model_{args.note}_{timestamp}.h5"
     train_model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
@@ -85,6 +87,7 @@ def main():
 
 if __name__ == '__main__':
     # TODO download more data
+    # TODO check if preprocessed words already there
     # TODO check if input folder empty
     # TODO check what exatra intra/inter difference is
     # TODO parallelize preprocessing
