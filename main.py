@@ -102,5 +102,4 @@ if __name__ == '__main__':
     # TODO check if input folder empty
     # TODO check what exatra intra/inter difference is
     # TODO parallelize preprocessing
-    # TODO test if using model.fit increases scores (increase batch size to > 1)
     main()

@@ -20,12 +20,12 @@ def build_model(vocab_size, embedding_dim):
     embedded_context = embedding(input_context)
     embedded_context = layers.Reshape((embedding_dim, 1))(embedded_context)
 
-    # define cosine similarity (= normalized dot product)
-    cosine_sim = layers.dot([embedded_target, embedded_context], axes=1, normalize=True)
-    cosine_sim = layers.Reshape((1,))(cosine_sim)
+    # define dot product
+    dot_product = layers.dot([embedded_target, embedded_context], axes=1)
+    dot_product = layers.Reshape((1,))(dot_product)
 
     # define sigmoid activation layer
-    output = layers.Activation(activation="sigmoid")(cosine_sim)
+    output = layers.Activation(activation="sigmoid")(dot_product)
 
     # create and compile model
     model = keras.Model(inputs=[input_target, input_context], outputs=output)
