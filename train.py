@@ -25,14 +25,22 @@ def train(model, val_model, id2word, vocab_size, batch_size, epochs, words_targe
         os.makedirs(chkpts_dir)
         logger.debug(f"created checkpoints models directory {chkpts_dir}")
 
-    logger.debug("creating training dataset")
-    SHUFFLE_BUFFER_SIZE = 100
-    train_dataset = tf.data.Dataset.from_tensor_slices(({"input_1": words_target[:2], "input_2": words_context[:2]}, labels[:2]))    
-    train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(batch_size)
+    # prepare splits
+    train_val_split = 0.2
+    full_size = len(labels)
+    train_size = int((1-train_val_split)* full_size)
+    val_size = int(train_val_split * full_size)
+    
+    # generate full dataset
+    dataset = tf.data.Dataset.from_tensor_slices(({"input_1": words_target, "input_2": words_context}, labels))
+    dataset = dataset.shuffle(full_size)
+    
+    # split up full dataset 
+    train_dataset = dataset.take(train_size).batch(batch_size)
+    val_dataset = dataset.skip(train_size).batch(batch_size)
 
-    val_split = 0.2
     logger.debug("starting training")
-    history = model.fit(train_dataset, validation_split=val_split, epochs=epochs, verbose=1)
+    history = model.fit(train_dataset, validation_data=val_dataset, epochs=epochs, verbose=1)
     
     # word_target = np.zeros((1,))
     # word_context = np.zeros((1,))
