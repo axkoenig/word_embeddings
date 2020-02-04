@@ -13,13 +13,7 @@ from matplotlib.ticker import MaxNLocator
 
 logger = logging.getLogger("MAIN.TRAIN")
 
-### params for validation
-valid_size = 16
-valid_window = 100
-valid_examples = np.random.choice(valid_window, valid_size, replace=False)
-
-
-def train(model, val_model, id2word, vocab_size, batch_size, epochs, words_target, words_context, labels, chkpts_dir, timestamp, note):
+def train(model, id2word, vocab_size, batch_size, epochs, words_target, words_context, labels, chkpts_dir, timestamp, note):
     
     if not os.path.exists(chkpts_dir):
         os.makedirs(chkpts_dir)
@@ -130,6 +124,12 @@ def plot(history, path, note, timestamp):
     
 
 class SimilarityCallback:
+    
+    ### params for validation
+    valid_size = 16
+    valid_window = 100
+    valid_examples = np.random.choice(valid_window, valid_size, replace=False)
+
     def run_sim(self, id2word, val_model, vocab_size):
         for i in range(valid_size):
             valid_word = id2word[valid_examples[i]]

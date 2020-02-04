@@ -71,11 +71,9 @@ def main():
     data, count, word2id, id2word = build_dataset(words, args.vocab_size)
     words_target, words_context, labels = keras_preprocessing(data, args.vocab_size, args.window_size)
 
-    # create models
-    train_model, val_model = build_model(args.vocab_size, args.embedding_dim)
+    model = build_model(args.vocab_size, args.embedding_dim)
     
-    history = train(train_model, 
-                    val_model,
+    history = train(model,
                     id2word, 
                     args.vocab_size, 
                     args.batch_size, 
@@ -93,7 +91,7 @@ def main():
 
     # save model
     model_name = f"model_{args.note}_{timestamp}.h5"
-    train_model.save(os.path.join(models_dir, model_name))
+    model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
     plot(history, logs_dir, args.note, timestamp)
