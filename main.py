@@ -96,7 +96,7 @@ def main():
     train_model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
-    plot_loss(history, logs_dir, note, timestamp)
+    plot(history, logs_dir, args.note, timestamp)
 
 if __name__ == '__main__':
     # TODO download more data

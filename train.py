@@ -30,8 +30,9 @@ def train(model, val_model, id2word, vocab_size, batch_size, epochs, words_targe
     train_dataset = tf.data.Dataset.from_tensor_slices(({"input_1": words_target[:2], "input_2": words_context[:2]}, labels[:2]))    
     train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(batch_size)
 
+    val_split = 0.2
     logger.debug("starting training")
-    history = model.fit(train_dataset, epochs=epochs, verbose=1)
+    history = model.fit(train_dataset, validation_split=val_split, epochs=epochs, verbose=1)
     
     # word_target = np.zeros((1,))
     # word_context = np.zeros((1,))
@@ -73,7 +74,7 @@ def train(model, val_model, id2word, vocab_size, batch_size, epochs, words_targe
 
     return history
 
-def plot_loss(history, path, note, timestamp):
+def plot(history, path, note, timestamp):
     """Plots loss history.
     
     Args:
@@ -88,21 +89,37 @@ def plot_loss(history, path, note, timestamp):
     rcParams['axes.titlesize'] = 12 
     rcParams['axes.grid'] = True
 
-    logger.debug("plotting loss")
+    logger.debug("plotting loss and accuracy")
     
-    name = f"{path}/loss_{note}_{timestamp}.png"
-
+    loss_name = f"{path}/loss_{note}_{timestamp}.png"
+    acc_name = f"{path}/acc_{note}_{timestamp}.png"
+    
+    # plot loss
     fig, ax = plt.subplots(1, 1, constrained_layout=True)
     plt.plot(history.history["loss"])
+    plt.plot(history.history["val_loss"])
     plt.xlabel("Epochs")
     plt.ylabel("Loss")
-    plt.xlim(0, len(history.history["loss"]))
+    plt.xlim(0, len(history.history["loss"])-1)
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    
+    plt.legend(["Train", "Test"], loc="upper right")
     plt.show()
-    fig.savefig(name, dpi=400)
-
-    logger.debug(f"saved loss plot to {name}")
+    fig.savefig(loss_name, dpi=400)
+    logger.debug(f"saved loss plot to {loss_name}")
+    
+    # plot accuracy
+    fig, ax = plt.subplots(1, 1, constrained_layout=True)
+    plt.plot(history.history["accuracy"])
+    plt.plot(history.history["val_accuracy"])
+    plt.xlabel("Epochs")
+    plt.ylabel("Accuracy")
+    plt.xlim(0, len(history.history["loss"])-1)
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.legend(["Train", "Test"], loc="upper left")
+    plt.show()
+    fig.savefig(acc_name, dpi=400)
+    logger.debug(f"saved accuracy plot to {acc_name}")
+    
 
 class SimilarityCallback:
     def run_sim(self, id2word, val_model, vocab_size):
