@@ -11,3 +11,7 @@
 2020-02-05 18:11:09,047 - MAIN.MODEL - [DEBUG]  created model
 2020-02-05 18:11:09,076 - MAIN.MODEL - [DEBUG]  compiled model
 2020-02-05 18:11:24,148 - MAIN.TRAIN - [DEBUG]  starting training
+2020-02-05 22:51:54,085 - MAIN.TRAIN - [DEBUG]  finished training
+2020-02-05 22:51:54,179 - MAIN - [DEBUG]  saved final model model_05_02_2020_180908_Voc15000Ep12Ws3Islam.h5 to output/islam/models/final
+2020-02-05 22:51:54,179 - MAIN.TRAIN - [DEBUG]  plotting loss and accuracy
+2020-02-05 22:51:55,086 - MAIN.TRAIN - [DEBUG]  saved loss plot to output/islam/logs/loss_05_02_2020_180908_Voc15000Ep12Ws3Islam.png

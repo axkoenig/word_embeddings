@@ -11,3 +11,8 @@
 2020-02-05 18:09:59,884 - MAIN.MODEL - [DEBUG]  created model
 2020-02-05 18:09:59,922 - MAIN.MODEL - [DEBUG]  compiled model
 2020-02-05 18:10:13,801 - MAIN.TRAIN - [DEBUG]  starting training
+2020-02-05 22:51:57,017 - MAIN.TRAIN - [DEBUG]  finished training
+2020-02-05 22:51:57,018 - MAIN - [DEBUG]  created final models directory output/christianity/models/final
+2020-02-05 22:51:57,087 - MAIN - [DEBUG]  saved final model model_05_02_2020_180809_Voc15000Ep12Ws3Christ.h5 to output/christianity/models/final
+2020-02-05 22:51:57,088 - MAIN.TRAIN - [DEBUG]  plotting loss and accuracy
+2020-02-05 22:51:57,925 - MAIN.TRAIN - [DEBUG]  saved loss plot to output/christianity/logs/loss_05_02_2020_180809_Voc15000Ep12Ws3Christ.png
