@@ -39,16 +39,16 @@ def is_context_word(model, word_a, word_b):
     # compute forward pass of model
     prediction = model.predict_on_batch([input_a, input_b])
     
-    # retrieve value from tensor
+    # retrieve value from tf tensor
     prediction = prediction.numpy()[0][0]
     
     return prediction 
 
-def get_similar_words(model, word, vocab_size, n):
-    """Returns n most similar words as indices.
+def get_similar_words(model, word, vocab_size, n, id2word=None, verbose=False):
+    """Returns n most similar words to given target word as predicted by neural network.
     """
     
-    similarities = np.zeros((vocab_size, 1))
+    similarities = np.zeros((vocab_size,))
     
     # get similarities for each word
     for i in range(vocab_size):
@@ -57,6 +57,12 @@ def get_similar_words(model, word, vocab_size, n):
     # get indices of n most similar words
     most_similar = (-similarities).argsort()[1 : n+1]
 
+    if verbose:
+        log = f"most similar to {id2word[word]}: "
+        for i in most_similar:
+            log += ", " + id2word[i]
+        logger.debug(log)
+        
     return most_similar
     
 def cos_similarity(word_a, word_b, model):
@@ -81,6 +87,7 @@ def calc_gender_bias(model):
     female_words = ["she", "her", "hers"]
     
     # if key error remove word from list 
+    
     
     pass   
 
@@ -109,14 +116,10 @@ if __name__ == '__main__':
     print(is_context_word(loaded_model, she_id, my_id))
     
     n = 10
-    most_similar = get_similar_words(loaded_model, he_id, vocab_size, n)
+    get_similar_words(loaded_model, he_id, vocab_size, n, id2word=id2word, verbose=True)
     
-    print("words most similar to --he--")
-    for i in range(n):
-        print(most_similar[i])
-        import pdb; pdb.set_trace()
-        word = id2word[most_similar[i]]
-        print(word)
+    
+    import pdb; pdb.set_trace()
         
     # for test_word in test_words:
     #     test_id = word2id[test_word]

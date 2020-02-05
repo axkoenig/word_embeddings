@@ -49,7 +49,7 @@ def main():
     
     # logger setup
     timestamp = datetime.datetime.now().strftime(format="%d_%m_%Y_%H%M%S")
-    log_name = args.note + timestamp + ".log"
+    log_name = timestamp + args.note + ".log"
     if not os.path.exists(logs_dir):
         os.makedirs(logs_dir)
 
@@ -90,7 +90,7 @@ def main():
         logger.debug(f"created final models directory {models_dir}")
 
     # save model
-    model_name = f"model_{args.note}_{timestamp}.h5"
+    model_name = f"model_{timestamp}_{args.note}.h5"
     model.save(os.path.join(models_dir, model_name))
     logger.debug(f"saved final model {model_name} to {models_dir}")
 
