@@ -1,0 +1,17 @@
+2020-02-05 18:41:34,546 - MAIN - [DEBUG]  starting program
+2020-02-05 18:41:34,546 - MAIN.PREPR - [DEBUG]  loading texts
+2020-02-05 18:41:34,905 - MAIN.PREPR - [DEBUG]  tokenizing texts
+2020-02-05 18:42:24,024 - MAIN.PREPR - [DEBUG]  normalizing text
+2020-02-05 18:42:51,720 - MAIN.PREPR - [DEBUG]  normalizing text done. returning 3246352 words
+2020-02-05 18:42:51,803 - MAIN.PREPR - [DEBUG]  building dataset
+2020-02-05 18:42:53,473 - MAIN.PREPR - [DEBUG]  unique words: 22934
+2020-02-05 18:42:53,473 - MAIN.PREPR - [DEBUG]  most common words: [['UNK', 21540], ('the', 171876), ('and', 146160), ('of', 88895), ('to', 77188), ('you', 69992), ('a', 60877), ('is', 52879), ('they', 49698), ('in', 45851)]
+2020-02-05 18:42:53,474 - MAIN.PREPR - [DEBUG]  building dataset done
+2020-02-05 18:43:33,642 - MAIN.PREPR - [DEBUG]  returning 4018076 ([target, context], label) pairs
+2020-02-05 18:43:36,851 - MAIN.MODEL - [DEBUG]  created model
+2020-02-05 18:43:36,886 - MAIN.MODEL - [DEBUG]  compiled model
+2020-02-05 18:43:53,342 - MAIN.TRAIN - [DEBUG]  starting training
+2020-02-05 22:15:35,394 - MAIN.TRAIN - [DEBUG]  finished training
+2020-02-05 22:15:35,471 - MAIN - [DEBUG]  saved final model model_05_02_2020_184134_Epoch12Ws3Islam.h5 to output/islam/models/final
+2020-02-05 22:15:35,472 - MAIN.TRAIN - [DEBUG]  plotting loss and accuracy
+2020-02-05 22:15:36,508 - MAIN.TRAIN - [DEBUG]  saved loss plot to output/islam/logs/loss_05_02_2020_184134_Epoch12Ws3Islam.png

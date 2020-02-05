@@ -1,0 +1,15 @@
+2020-02-05 16:33:57,015 - MAIN - [DEBUG]  starting program
+2020-02-05 16:33:57,015 - MAIN.PREPR - [DEBUG]  loading texts
+2020-02-05 16:33:57,368 - MAIN.PREPR - [DEBUG]  tokenizing texts
+2020-02-05 16:34:36,373 - MAIN.PREPR - [DEBUG]  normalizing text
+2020-02-05 16:34:36,373 - MAIN.PREPR - [DEBUG]  created pre/post-processing directory output/islam/text
+2020-02-05 16:34:56,451 - MAIN.PREPR - [DEBUG]  normalizing text done. returning 3246352 words
+2020-02-05 16:34:56,521 - MAIN.PREPR - [DEBUG]  building dataset
+2020-02-05 16:34:57,756 - MAIN.PREPR - [DEBUG]  unique words: 22934
+2020-02-05 16:34:57,756 - MAIN.PREPR - [DEBUG]  most common words: [['UNK', 21540], ('the', 171876), ('and', 146160), ('of', 88895), ('to', 77188), ('you', 69992), ('a', 60877), ('is', 52879), ('they', 49698), ('in', 45851)]
+2020-02-05 16:34:57,757 - MAIN.PREPR - [DEBUG]  building dataset done
+2020-02-05 16:35:46,651 - MAIN.PREPR - [DEBUG]  returning 6705516 ([target, context], label) pairs
+2020-02-05 16:35:51,374 - MAIN.MODEL - [DEBUG]  created model
+2020-02-05 16:35:51,401 - MAIN.MODEL - [DEBUG]  compiled model
+2020-02-05 16:35:51,401 - MAIN.TRAIN - [DEBUG]  created checkpoints models directory output/islam/models/chkpts
+2020-02-05 16:36:10,787 - MAIN.TRAIN - [DEBUG]  starting training

@@ -1,0 +1,15 @@
+2020-02-05 16:34:23,069 - MAIN - [DEBUG]  starting program
+2020-02-05 16:34:23,069 - MAIN.PREPR - [DEBUG]  loading texts
+2020-02-05 16:34:23,169 - MAIN.PREPR - [DEBUG]  tokenizing texts
+2020-02-05 16:34:56,999 - MAIN.PREPR - [DEBUG]  normalizing text
+2020-02-05 16:34:56,999 - MAIN.PREPR - [DEBUG]  created pre/post-processing directory output/christianity/text
+2020-02-05 16:35:17,340 - MAIN.PREPR - [DEBUG]  normalizing text done. returning 3399877 words
+2020-02-05 16:35:17,409 - MAIN.PREPR - [DEBUG]  building dataset
+2020-02-05 16:35:18,651 - MAIN.PREPR - [DEBUG]  unique words: 16253
+2020-02-05 16:35:18,651 - MAIN.PREPR - [DEBUG]  most common words: [['UNK', 11821], ('the', 248898), ('and', 199957), ('of', 142623), ('to', 86337), ('in', 54450), ('a', 51487), ('that', 41038), ('he', 40814), ('for', 39346)]
+2020-02-05 16:35:18,651 - MAIN.PREPR - [DEBUG]  building dataset done
+2020-02-05 16:36:06,716 - MAIN.PREPR - [DEBUG]  returning 6689606 ([target, context], label) pairs
+2020-02-05 16:36:11,401 - MAIN.MODEL - [DEBUG]  created model
+2020-02-05 16:36:11,432 - MAIN.MODEL - [DEBUG]  compiled model
+2020-02-05 16:36:11,432 - MAIN.TRAIN - [DEBUG]  created checkpoints models directory output/christianity/models/chkpts
+2020-02-05 16:36:31,533 - MAIN.TRAIN - [DEBUG]  starting training

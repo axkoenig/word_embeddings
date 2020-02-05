@@ -1,0 +1,13 @@
+2020-02-05 17:55:41,239 - MAIN - [DEBUG]  starting program
+2020-02-05 17:55:41,239 - MAIN.PREPR - [DEBUG]  loading texts
+2020-02-05 17:55:41,336 - MAIN.PREPR - [DEBUG]  tokenizing texts
+2020-02-05 17:56:15,272 - MAIN.PREPR - [DEBUG]  normalizing text
+2020-02-05 17:56:35,832 - MAIN.PREPR - [DEBUG]  normalizing text done. returning 3399877 words
+2020-02-05 17:56:35,896 - MAIN.PREPR - [DEBUG]  building dataset
+2020-02-05 17:56:37,152 - MAIN.PREPR - [DEBUG]  unique words: 16253
+2020-02-05 17:56:37,152 - MAIN.PREPR - [DEBUG]  most common words: [['UNK', 1254], ('the', 248898), ('and', 199957), ('of', 142623), ('to', 86337), ('in', 54450), ('a', 51487), ('that', 41038), ('he', 40814), ('for', 39346)]
+2020-02-05 17:56:37,152 - MAIN.PREPR - [DEBUG]  building dataset done
+2020-02-05 17:57:27,352 - MAIN.PREPR - [DEBUG]  returning 6911650 ([target, context], label) pairs
+2020-02-05 17:57:32,204 - MAIN.MODEL - [DEBUG]  created model
+2020-02-05 17:57:32,229 - MAIN.MODEL - [DEBUG]  compiled model
+2020-02-05 17:57:52,024 - MAIN.TRAIN - [DEBUG]  starting training

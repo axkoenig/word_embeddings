@@ -1,0 +1,9 @@
+2020-02-05 17:54:39,938 - MAIN - [DEBUG]  starting program
+2020-02-05 17:54:39,939 - MAIN.PREPR - [DEBUG]  loading texts
+2020-02-05 17:54:40,221 - MAIN.PREPR - [DEBUG]  tokenizing texts
+2020-02-05 17:55:19,069 - MAIN.PREPR - [DEBUG]  normalizing text
+2020-02-05 17:55:39,271 - MAIN.PREPR - [DEBUG]  normalizing text done. returning 3246352 words
+2020-02-05 17:55:39,341 - MAIN.PREPR - [DEBUG]  building dataset
+2020-02-05 17:55:40,656 - MAIN.PREPR - [DEBUG]  unique words: 22934
+2020-02-05 17:55:40,656 - MAIN.PREPR - [DEBUG]  most common words: [['UNK', 8106], ('the', 171876), ('and', 146160), ('of', 88895), ('to', 77188), ('you', 69992), ('a', 60877), ('is', 52879), ('they', 49698), ('in', 45851)]
+2020-02-05 17:55:40,656 - MAIN.PREPR - [DEBUG]  building dataset done
