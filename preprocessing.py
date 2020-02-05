@@ -62,8 +62,8 @@ def normalization(words, path):
         for word in words:
             f.write("%s\n" % word)
 
-    # remove unwanted word tokens such as punctuation or numbers, keep apostrophes
-    pattern = "[^A-Za-z']+"
+    # remove unwanted word tokens such as punctuation or numbers
+    pattern = "[^A-Za-z]+"
     words = list(filter(None, [re.sub(pattern, "", word) for word in words]))
 
     # case conversion

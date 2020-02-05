@@ -36,42 +36,6 @@ def train(model, id2word, vocab_size, batch_size, epochs, words_target, words_co
     logger.debug("starting training")
     history = model.fit(dataset, epochs=epochs, verbose=1)
     
-    # word_target = np.zeros((1,))
-    # word_context = np.zeros((1,))
-    # label = np.zeros((1,))
-
-    # avg_loss = 0
-    # loss_hist = []
-    # log_iter = 1000
-    # chkpt_iter = 10000
-
-    # sim_cb = SimilarityCallback()
-    
-    # for iteration in range(iterations):
-    #     # select training data randomly
-    #     index = np.random.randint(0, len(labels)-1)
-    #     word_target[0, ] = words_target[index]
-    #     word_context[0, ] = words_context[index]
-    #     label[0, ] = labels[index]
-
-    #     loss = model.train_on_batch([word_target, word_context], label)
-    #     avg_loss += loss
-
-    #     if iteration % log_iter == 0:
-    #         if iteration > 0:
-    #             avg_loss /= log_iter
-    #         logger.debug(f"iteration: {iteration} \t avg loss: {avg_loss}")
-    #         loss_hist.append((iteration, avg_loss))
-    #         avg_loss = 0
-
-    #     if iteration % chkpt_iter == 0:
-    #         logger.debug(f"saving model at iteration {iteration}")
-    #         model_name = f"{iteration}_of_{iterations}_model_{note}_{timestamp}.h5"
-    #         model.save(os.path.join(chkpts_dir, model_name))
-    #         logger.debug(f"saved model {model_name} to {chkpts_dir}")
-            
-    #         sim_cb.run_sim(id2word, val_model, vocab_size)
-
     logger.debug("finished training")
 
     return history
