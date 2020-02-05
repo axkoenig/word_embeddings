@@ -17,7 +17,7 @@ WINDOW_SIZE=3
 BATCH_SIZE=128
 EPOCHS=3
 NUM_THREADS=16
-NOTE="_"
+NOTE="-DEBUGGING-"
 
 python3 main.py --input_subdir $INPUT_SUBDIR \
                  --embedding_dim $EMBEDDING_DIM \
