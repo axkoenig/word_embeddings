@@ -48,19 +48,20 @@ def get_word_tokens(path):
 
     return words
 
-def normalization(words, path):
+def normalization(words, path=None, save=False):
     """Returns normalized words"""
     logger.debug("normalizing text")
 
-    # create directory for saving processing outputs
-    if not os.path.exists(path):
-        os.makedirs(path)
-        logger.debug(f"created pre/post-processing directory {path}")
+    if save:
+        # create directory for saving processing outputs
+        if not os.path.exists(path):
+            os.makedirs(path)
+            logger.debug(f"created pre/post-processing directory {path}")
 
-    # write text before processing to disk
-    with open(f'{path}/pre.txt', 'w') as f:
-        for word in words:
-            f.write("%s\n" % word)
+        # write text before processing to disk
+        with open(f'{path}/pre.txt', 'w') as f:
+            for word in words:
+                f.write("%s\n" % word)
 
     # remove unwanted word tokens such as punctuation or numbers
     pattern = "[^A-Za-z]+"
@@ -73,12 +74,11 @@ def normalization(words, path):
     wnl = WordNetLemmatizer()
     words = [wnl.lemmatize(word) for word in words]
 
-    # TODO consider cleaning 's apostrophes
-
-    # write text after processing to disk
-    with open(f'{path}/post.txt', 'w') as f:
-        for word in words:
-            f.write("%s\n" % word)
+    if save:
+        # write text after processing to disk
+        with open(f'{path}/post.txt', 'w') as f:
+            for word in words:
+                f.write("%s\n" % word)
 
     logger.debug(f"normalizing text done. returning {len(words)} words")
     return words

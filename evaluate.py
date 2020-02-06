@@ -9,7 +9,7 @@ from model import *
 from preprocessing import * 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-logger = logging.getLogger("EVALUATOR")
+logger = logging.getLogger("MAIN.EVALUATOR")
 
 def load_model(path):
     """Loads a Keras embedding model from path and returns embedding layer."""
@@ -88,7 +88,7 @@ def calc_gender_bias(model):
     
     # if key error remove word from list 
     
-    
+    # TODO 
     pass   
 
 if __name__ == '__main__':

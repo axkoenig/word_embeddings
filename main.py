@@ -102,4 +102,6 @@ if __name__ == '__main__':
     # TODO check if input folder empty
     # TODO check what exatra intra/inter difference is
     # TODO parallelize preprocessing
+    # TODO insert/delete checkpoint saving
+    # TODO get word tokens from postprocessed txt file
     main()
